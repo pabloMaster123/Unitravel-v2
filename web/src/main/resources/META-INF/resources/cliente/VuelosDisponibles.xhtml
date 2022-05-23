@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../WEB-INF/template.xhtml">
+    <ui:define name="title">Gestionar Vuelo</ui:define>
+
+    <ui:define name="content">
+
+        <style type="text/css">
+
+            dataView{
+                align-content: center;
+            }
+
+            .ui-dataview .ui-dataview-header .ui-dataview-layout-options{
+                visibility: hidden;
+            }
+
+        </style>
+        <h:form>
+
+            <p:panelGrid columns="2" cellpadding="50" layout="flex">
+
+                <p:outputPanel>
+                    <p:panelGrid columns="1" cellpadding="3.5" id="panelBuscarCiudad">
+                        <div align="left">
+                            <p:outputLabel value="Origen:" for="ciudad_o_Buscar"/>
+                            <p:selectOneMenu id="ciudad_o_Buscar" value="#{listarVuelolBean.ciudadOrigenBuscar}" converter="#{ciudadConverter}">
+                                <f:selectItem itemLabel="Seleccione una ciudad de Origen" noSelectionOption="true"/>
+                                <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                               value="#{listarVuelolBean.ciudades}"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="Buscar Vuelo Origen" action="#{listarVuelolBean.buscarVueloCiuddaOrigen()}" update="@form" for="panelBuscarCiudad"/>
+                        </div>
+
+                        <div align="left">
+                            <p:outputLabel value="Destino:" for="ciudad_d_Buscar"/>
+                            <p:selectOneMenu id="ciudad_d_Buscar" value="#{listarVuelolBean.ciudadDestinoBuscar}" converter="#{ciudadConverter}">
+                                <f:selectItem itemLabel="Seleccione una ciudad de Destino" noSelectionOption="true"/>
+                                <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                               value="#{listarVuelolBean.ciudades}"/>
+                            </p:selectOneMenu>
+                            <p:commandButton value="Buscar Vuelo Destino" action="#{listarVuelolBean.buscarVueloCiudadDestino()}" update="@form" for="panelBuscarCiudad"/>
+                        </div>
+
+                        <div align="left">
+                        <p:outputLabel value="Fecha Vuelo:" for="fecha_b"/>
+                        <p:datePicker id="fecha_b" value="#{listarVuelolBean.fechaBuscar}"/>
+                        </div>
+                        <p:commandButton value="Buscar Vuelo Por fecha" action="#{listarVuelolBean.buscarVueloFecha()}" update="@form" for="panelBuscarCiudad"/>
+                    </p:panelGrid>
+                </p:outputPanel>
+
+                <p:outputPanel>
+
+                    <p:dataView value="#{listarVuelolBean.vuelos}" var="vuelo" >
+                        <f:facet name="header">
+                            Listado de Vuelos
+                        </f:facet>
+                        <p:dataViewListItem>
+                            <div class="row item-pro" align="center">
+                                <div class="col-lg-8 col-md-1 align-self-center">
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Fecha:"/>
+                                            <h:outputText value="#{vuelo.fecha}" style="font-weight:bold"/>
+                                            <h:outputText value="Cantidad de Sillas:"/>
+                                            <h:outputText value="#{vuelo.cantidadDeSillas}" style="font-weight:bold"/>
+                                            <h:outputText value="Ciudad Origen:"/>
+                                            <h:outputText value="#{vuelo.origen.nombre}" style="font-weight:bold"/>
+                                            <h:outputText value="Ciudad Destino:"/>
+                                            <h:outputText value="#{vuelo.destino.nombre}" style="font-weight:bold"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                </div>
+                            </div>
+                        </p:dataViewListItem>
+                    </p:dataView>
+
+                </p:outputPanel>
+
+            </p:panelGrid>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>
