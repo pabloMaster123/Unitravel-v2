@@ -28,7 +28,7 @@
                     </a>
                     <span class="pi pi-shopping-cart" style="front-size:2rem;margin-right:2px"></span>
                     <span class="fs-4">
-              <a href="index.xhtml" class="nav-link text-white"> UniTravel  </a></span>
+              <a href="/index.xhtml" class="nav-link text-white"> UniTravel  </a></span>
                     <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                         <li>
                             <a href="/index.xhtml" class="nav-link text-white">
@@ -98,28 +98,30 @@
             <div class="container d-flex flex-wrap justify-content-end">
 
                 <div class="text-end">
-                    <h:form rendered="#{!seguridadBean.autenticado}">
-                        <p:commandButton value="Login" styleClass="btn btn-primary me-2" onclick="PF('login').show()" icon="pi pi-sign-in"/>
+                    <h:form >
+                        <p:commandButton value="Hoteles" styleClass="btn btn-primary me-2"
+                                         action="#{seguridadBean.redireccionarParaVerHoteles()}"
+                                         rendered="true"/>
+                        <p:commandButton value="Login" styleClass="btn btn-primary me-2" onclick="PF('login').show()" icon="pi pi-sign-in"
+                                         rendered="#{!seguridadBean.autenticado}"/>
                         <p:commandButton value="Registrase" styleClass="btn btn-primary"
-                                         action="RegistrarCliente.xhtml?faces-redirect=true" icon="pi pi-user-plus"/>
+                                         action="RegistrarCliente.xhtml?faces-redirect=true" icon="pi pi-user-plus"
+                                         rendered="#{!seguridadBean.autenticado}"/>
                     </h:form>
 
                 </div>
                 <div class="text-end">
 
-                    <h:form rendered="#{seguridadBean.autenticadoCliente}">
-                        <p:commandButton value="Gestionar Cuenta" styleClass="btn btn-primary me-2"
-                                         action="#{seguridadBean.redireccionarParaGestionarCuenta(seguridadBean.cliente.cedula)}"/>
-                    </h:form>
-
-                    <h:form rendered="#{seguridadBean.autenticadoAdminHotel}">
-                        <p:commandButton value="Gestionar Hoteles" styleClass="btn btn-primary me-2"
-                                         action="#{seguridadBean.redireccionarParaGestionarHoteles(seguridadBean.administradorHotel.cedula)}"/>
-                    </h:form>
-
                     <h:form rendered="#{seguridadBean.autenticado}">
+                        <p:commandButton value="Gestionar Hoteles" styleClass="btn btn-primary me-2"
+                                         action="#{seguridadBean.redireccionarParaGestionarHoteles(seguridadBean.administradorHotel.cedula)}"
+                                         rendered="#{seguridadBean.autenticadoAdminHotel}"/>
+                        <p:commandButton value="Gestionar Cuenta" styleClass="btn btn-primary me-2"
+                                         action="#{seguridadBean.redireccionarParaGestionarCuenta(seguridadBean.cliente.cedula)}"
+                                         rendered="#{seguridadBean.autenticadoCliente}"/>
                         <p:commandButton value="Cerrar Sesion" styleClass="btn btn-primary"
-                                         action="#{seguridadBean.cerrarSesion}"/>
+                                         action="#{seguridadBean.cerrarSesion}"
+                                         rendered="#{seguridadBean.autenticado}"/>
                     </h:form>
                 </div>
             </div>

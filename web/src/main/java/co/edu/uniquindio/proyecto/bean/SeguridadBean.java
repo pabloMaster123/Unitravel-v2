@@ -106,6 +106,9 @@ public class SeguridadBean implements Serializable {
         autenticadoAdmin = false;
         autenticadoAdminHotel = false;
         autenticadoAdminHotel = false;
+        administrador = null;
+        administradorHotel = null;
+        cliente = null;
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/index?faces-redirect=true";
     }
@@ -116,6 +119,14 @@ public class SeguridadBean implements Serializable {
 
     public String redireccionarParaGestionarHoteles(String cedula) {
         return "/administradorHotel/GestionarHotel.xhtml?faces-redirect=true&amp;cedula="+cedula;
+    }
+
+    public String redireccionarParaVerHoteles() {
+        if(autenticadoCliente){
+            return "InicioHoteles.xhtml?faces-redirect=true&amp;cedula="+cliente.getCedula();
+        } else {
+            return "InicioHoteles.xhtml?faces-redirect=true&amp;cedula="+"";
+        }
     }
 
 }

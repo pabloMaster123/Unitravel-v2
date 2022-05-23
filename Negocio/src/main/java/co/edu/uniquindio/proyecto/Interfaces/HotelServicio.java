@@ -23,4 +23,6 @@ public interface HotelServicio {
 
     List<Hotel> listarHotelPorCiudad (String nombreCiudad) throws Exception;
 
+    public List<Hotel> listarHotelPorCantidadDeEstrellas(Integer cantidad) throws Exception;
+
 }
