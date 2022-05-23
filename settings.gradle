@@ -1,2 +1,5 @@
 rootProject.name = 'Unitravel'
 
+include(':Persistencia')
+include(':Negocio')
+include(':web')
