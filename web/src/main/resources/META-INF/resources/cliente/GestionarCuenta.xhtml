@@ -51,13 +51,13 @@
             <p:dialog header="Actualizar Informacion" showEffect="fade" widgetVar="editar" modal="true" rendered="#{seguridadBean.autenticadoCliente}">
                 <p:panelGrid columns="2" cellpadding="5">
                     <p:outputLabel value="Nombre Nuevo:" for="nombre_c"/>
-                    <p:inputText id="nombre_c" value="#{gestionarCuentaBean.nombreNuevo}" required="true"/>
+                    <p:inputText id="nombre_c" value="#{gestionarCuentaBean.nombreNuevo}"/>
 
                     <p:outputLabel value="Email:" for="email_c"/>
-                    <p:inputText id="email_c" value="#{gestionarCuentaBean.emailNuevo}" required="true"/>
+                    <p:inputText id="email_c" value="#{gestionarCuentaBean.emailNuevo}"/>
 
                     <p:outputLabel value="Password:" for="password_c"/>
-                    <p:inputText id="password_c" value="#{gestionarCuentaBean.passwordNueva}" required="true"/>
+                    <p:inputText id="password_c" value="#{gestionarCuentaBean.passwordNueva}"/>
 
                     <p:outputLabel value="Ciudad" for="ciudad_c"/>
                     <p:selectOneMenu id="ciudad_c" value="#{gestionarCuentaBean.ciudadNueva}" converter="#{ciudadConverter}">

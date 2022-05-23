@@ -75,24 +75,24 @@
 
                 <p:outputPanel>
                     <p:panelGrid columns="1" cellpadding="3.5" id="panelBuscarCiudad">
-                <div align="left">
-                    <p:outputLabel value="Origen:" for="ciudad_o_Buscar"/>
-                    <p:selectOneMenu id="ciudad_o_Buscar" value="#{gestionarVueloBean.ciudadOrigenBuscar}" converter="#{ciudadConverter}">
-                        <f:selectItem itemLabel="Seleccione una ciudad de Origen" noSelectionOption="true"/>
-                        <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
-                                       value="#{gestionarVueloBean.ciudades}"/>
-                    </p:selectOneMenu>
-                        <p:commandButton value="Buscar Vuelo Origen" action="#{gestionarVueloBean.buscarVueloCiuddaOrigen()}" update="@form" for="panelBuscarCiudad"/>
+                    <div align="left">
+                        <p:outputLabel value="Origen:" for="ciudad_o_Buscar"/>
+                        <p:selectOneMenu id="ciudad_o_Buscar" value="#{gestionarVueloBean.ciudadOrigenBuscar}" converter="#{ciudadConverter}">
+                            <f:selectItem itemLabel="Seleccione una ciudad de Origen" noSelectionOption="true"/>
+                            <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                           value="#{gestionarVueloBean.ciudades}"/>
+                        </p:selectOneMenu>
+                            <p:commandButton value="Buscar Vuelo Origen" action="#{gestionarVueloBean.buscarVueloCiuddaOrigen()}" update="@form" for="panelBuscarCiudad"/>
                     </div>
 
                     <div align="left">
-                        <p:outputLabel value="Destino:" for="ciudad_d_Buscar"/>
-                    <p:selectOneMenu id="ciudad_d_Buscar" value="#{gestionarVueloBean.ciudadDestinoBuscar}" converter="#{ciudadConverter}">
-                        <f:selectItem itemLabel="Seleccione una ciudad de Destino" noSelectionOption="true"/>
-                        <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
-                                       value="#{gestionarVueloBean.ciudades}"/>
-                    </p:selectOneMenu>
-                        <p:commandButton value="Buscar Vuelo Destino" action="#{gestionarVueloBean.buscarVueloCiudadDestino()}" update="@form" for="panelBuscarCiudad"/>
+                            <p:outputLabel value="Destino:" for="ciudad_d_Buscar"/>
+                        <p:selectOneMenu id="ciudad_d_Buscar" value="#{gestionarVueloBean.ciudadDestinoBuscar}" converter="#{ciudadConverter}">
+                            <f:selectItem itemLabel="Seleccione una ciudad de Destino" noSelectionOption="true"/>
+                            <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                           value="#{gestionarVueloBean.ciudades}"/>
+                        </p:selectOneMenu>
+                            <p:commandButton value="Buscar Vuelo Destino" action="#{gestionarVueloBean.buscarVueloCiudadDestino()}" update="@form" for="panelBuscarCiudad"/>
                     </div>
                     </p:panelGrid>
                 </p:outputPanel>

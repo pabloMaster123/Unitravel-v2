@@ -30,4 +30,6 @@ public interface HotelRepo extends JpaRepository<Hotel,Integer> {
 
     Hotel getByNombre(String nombre);
 
+    List<Hotel> findAllByNumeroDeEstrellas(Integer cantidad);
+
 }

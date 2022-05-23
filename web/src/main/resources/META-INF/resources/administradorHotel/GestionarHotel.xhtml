@@ -15,28 +15,100 @@
             <p:messages id="messages" showDetail="true" closable="true">
                 <p:autoUpdate/>
             </p:messages>
+            <div>
+                <p:commandButton value="Agregar Hotel" onclick="PF('agregar').show()"/>
+            </div>
+            <div align="right">
+                <h:panelGrid columns="2" cellpadding="5" id="panelBuscar">
+                    <h:inputText id="hotelBuscar" placeHolder="Nombre..." value="#{gestionarHotelBean.nombreBuscar}"/>
+                </h:panelGrid>
+                <p:commandButton value="Buscar Hotel" action="#{gestionarHotelBean.buscarHotel()}" update="@form" for="panelBuscar"/>
+            </div>
 
+            <div>
+                <p:dataView value="#{gestionarHotelBean.hoteles}" var="hotel">
+                    <f:facet name="header">
+                        Listado de hoteles
+                    </f:facet>
+                    <p:dataViewListItem>
+                        <div class="row item-pro" align="center">
+                            <div class="col-lg-8 col-md-1 align-self-center">
+                                <p:outputPanel>
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Nombre:"/>
+                                        <h:outputText value="#{hotel.nombre}" style="font-weight:bold"/>
+                                        <h:outputText value="Numero de Estrellas:"/>
+                                        <h:outputText value="#{hotel.numeroDeEstrellas}" style="font-weight:bold"/>
+                                        <h:outputText value="Ciudad:"/>
+                                        <h:outputText value="#{hotel.destino.nombre}" style="font-weight:bold"/>
+                                        <h:outputText value="Direccion:"/>
+                                        <h:outputText value="#{hotel.direccion}" style="font-weight:bold"/>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                            </div>
+                            <div class="col-lg-2 col-md-1 align-self-center">
+                                <p:panelGrid columns="2" cellpadding="5">
+                                    <p:commandButton value="Eliminar" styleClass="ui-button-raised" iconPos="right"
+                                                     action="#{gestionarHotelBean.eliminarHotel(hotel.codigo)}"/>
+                                    <p:commandButton value="Actualizar" styleClass="ui-button-raised" iconPos="right"
+                                                     action="#{gestionarHotelBean.setearCodigoActualizar(hotel.codigo)}" onclick="PF('actualizar').show()"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
 
-            <h:panelGrid columns="2" cellpadding="5">
+                    </p:dataViewListItem>
+                </p:dataView>
+            </div>
 
-                <p:outputLabel value="Nombre del hotel:" for="Nombre_H"/>
-                <p:inputText id="Nombre_H" value="#{gestionarHotelBean.nombre}" required="true"/>
+            <p:dialog header="Registrar Hotel" showEffect="fade" widgetVar="agregar" modal="true" rendered="#{seguridadBean.autenticadoAdminHotel}">
 
-                <p:outputLabel value="Direcion del hotel" for="Direccion_H" />
-                <p:inputText id="Direccion_H" value="#{gestionarHotelBean.direcion}" required="true"/>
+                <h:panelGrid columns="2" cellpadding="5">
 
-                <p:outputLabel value="Numero de Estrellas del hotel" for="Estrellas_H" />
-                <p:inputText id="Estrellas_H" value="#{gestionarHotelBean.numEstrellas}" required="true"/>
+                    <p:outputLabel value="Nombre del hotel:" for="Nombre_H"/>
+                    <p:inputText id="Nombre_H" value="#{gestionarHotelBean.nombre}"/>
 
-                <p:outputLabel value="Ciudad Hotel:" for="Ciudad_H"/>
-                <p:selectOneMenu id="Ciudad_H" value="#{gestionarHotelBean.ciudadHotel}" converter="#{ciudadConverter}">
-                    <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true"/>
-                    <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
-                                   value="#{gestionarHotelBean.ciudades}"/>
-                </p:selectOneMenu>
+                    <p:outputLabel value="Direcion del hotel" for="Direccion_H" />
+                    <p:inputText id="Direccion_H" value="#{gestionarHotelBean.direccion}"/>
 
-            </h:panelGrid>
-            <p:commandButton value="Registrar Hoteles" action="#{gestionarHotelBean.registrarHotel}" update="@form"/>
+                    <p:outputLabel value="Numero de Estrellas del hotel" for="Estrellas_H" />
+                    <p:inputText id="Estrellas_H" value="#{gestionarHotelBean.numEstrellas}"/>
+
+                    <p:outputLabel value="Ciudad Hotel:" for="Ciudad_H"/>
+                    <p:selectOneMenu id="Ciudad_H" value="#{gestionarHotelBean.ciudadHotel}" converter="#{ciudadConverter}">
+                        <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true"/>
+                        <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                       value="#{gestionarHotelBean.ciudades}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+                <p:commandButton value="Registrar Hotel" action="#{gestionarHotelBean.registrarHotel}" update="@form"/>
+
+            </p:dialog>
+
+            <p:dialog header="Actualizar Hotel" showEffect="fade" widgetVar="actualizar" modal="true" rendered="#{seguridadBean.autenticadoAdminHotel}">
+
+                <h:panelGrid columns="2" cellpadding="5">
+
+                    <p:outputLabel value="Nombre del hotel:" for="NombreActualizar"/>
+                    <p:inputText id="NombreActualizar" value="#{gestionarHotelBean.nombreActualizar}"/>
+
+                    <p:outputLabel value="Direcion del hotel" for="DireccionActualizar" />
+                    <p:inputText id="DireccionActualizar" value="#{gestionarHotelBean.direccionActualizar}"/>
+
+                    <p:outputLabel value="Numero de Estrellas del hotel" for="EstrellasActualizar" />
+                    <p:inputText id="EstrellasActualizar" value="#{gestionarHotelBean.numEstrellasActualizar}"/>
+
+                    <p:outputLabel value="Ciudad Hotel:" for="CiudadActualizar"/>
+                    <p:selectOneMenu id="CiudadActualizar" value="#{gestionarHotelBean.ciudadHotelActualizar}" converter="#{ciudadConverter}">
+                        <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true"/>
+                        <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                       value="#{gestionarHotelBean.ciudades}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+                <p:commandButton value="Actualizar Hotel" action="#{gestionarHotelBean.actualizarHotel()}" update="@form"/>
+
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>

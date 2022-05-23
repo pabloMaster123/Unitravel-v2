@@ -39,12 +39,6 @@ public class HotelServicioImpl implements HotelServicio {
         if(hotelRepo.findById(codigo).isPresent()) {
             String aux = nombre.trim();
 
-            Optional<Hotel> buscar = hotelRepo.buscarPorNombreExacto(aux.toUpperCase());
-
-            if (buscar.isEmpty()){
-                throw new Exception("No existe un hotel con este nombre.");
-            } else {
-
                 Hotel hotelAux = hotelRepo.getById(codigo);
                 hotelAux.setNombre(nombre.trim());
                 hotelAux.setDireccion(direccion);
@@ -53,7 +47,6 @@ public class HotelServicioImpl implements HotelServicio {
                 hotelAux.setAdministradorHotel(administradorHotel);
 
                 return hotelRepo.save(hotelAux);
-            }
         } else {
             throw new Exception("No existe un hotel con el codigo indicado");
         }
@@ -92,6 +85,11 @@ public class HotelServicioImpl implements HotelServicio {
     @Override
     public List<Hotel> listarHotelPorCiudad(String nombreCiudad) throws Exception {
         return hotelRepo.buscarHotelesPorCiudadAproximada(nombreCiudad.trim().toUpperCase());
+    }
+
+    @Override
+    public List<Hotel> listarHotelPorCantidadDeEstrellas(Integer cantidad) throws Exception {
+        return hotelRepo.findAllByNumeroDeEstrellas(cantidad);
     }
 
 }

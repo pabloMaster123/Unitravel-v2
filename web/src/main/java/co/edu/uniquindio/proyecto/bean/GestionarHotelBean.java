@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.bean;
 
 import co.edu.uniquindio.proyecto.Entidades.AdministradorHotel;
 import co.edu.uniquindio.proyecto.Entidades.Ciudad;
+import co.edu.uniquindio.proyecto.Entidades.Hotel;
 import co.edu.uniquindio.proyecto.Interfaces.AdministradorHotelServicio;
 import co.edu.uniquindio.proyecto.Interfaces.CiudadServicio;
 import co.edu.uniquindio.proyecto.Interfaces.HotelServicio;
@@ -35,7 +36,7 @@ public class GestionarHotelBean implements Serializable {
 
     private String nombre;
 
-    private String direcion;
+    private String direccion;
 
     private Integer numEstrellas;
 
@@ -43,7 +44,23 @@ public class GestionarHotelBean implements Serializable {
 
     private Ciudad ciudadHotel;
 
+    private Integer codigoActualizar;
+
+    private String nombreActualizar;
+
+    private String direccionActualizar;
+
+    private Integer numEstrellasActualizar;
+
+    private List<Ciudad> ciudadesActualizar;
+
+    private Ciudad ciudadHotelActualizar;
+
     private AdministradorHotel administradorHotel;
+
+    private List<Hotel> hoteles;
+
+    private String nombreBuscar;
 
     @Value("#{param['cedula']}")
     private String cedula;
@@ -53,6 +70,7 @@ public class GestionarHotelBean implements Serializable {
         try{
             this.ciudades = ciudadServicio.listar();
             this.administradorHotel = administradorHotelServicio.buscarAdministradorDeHotelPorCedula(cedula);
+            this.hoteles = administradorHotel.getHoteles();
         }catch(Exception e){
             e.printStackTrace();
 
@@ -61,7 +79,7 @@ public class GestionarHotelBean implements Serializable {
 
     public String registrarHotel(){
         try {
-            hotelServicio.agregarHotel(nombre, direcion,numEstrellas,ciudadHotel,administradorHotel);
+            hotelServicio.agregarHotel(nombre, direccion,numEstrellas,ciudadHotel,administradorHotel);
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"alerta", "registro exitoso");
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
             return "/administradorHotel/GestionarHotel.xhtml?faces-redirect=true&amp;cedula="+cedula;
@@ -71,6 +89,48 @@ public class GestionarHotelBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
         }
         return null;
+    }
+
+    public void setearCodigoActualizar(Integer codigo){
+        this.codigoActualizar = codigo;
+    }
+
+    public String actualizarHotel(){
+        try {
+            hotelServicio.actualizarHotel(codigoActualizar, nombreActualizar, direccionActualizar,numEstrellasActualizar,ciudadHotelActualizar,administradorHotel);
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"alerta", "Actualizacion exitosa");
+            FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+            return "/administradorHotel/GestionarHotel.xhtml?faces-redirect=true&amp;cedula="+cedula;
+        }catch (Exception e){
+            e.printStackTrace();
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+        }
+        return null;
+    }
+
+    public String eliminarHotel(Integer codigo){
+        try {
+            hotelServicio.eliminarHotel(codigo);
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"alerta", "Actualizacion exitosa");
+            FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+            return "/administradorHotel/GestionarHotel.xhtml?faces-redirect=true&amp;cedula="+cedula;
+        }catch (Exception e){
+            e.printStackTrace();
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+        }
+        return null;
+    }
+
+    public void buscarHotel(){
+        try{
+            hoteles = hotelServicio.buscarHotelPorNombre(nombreBuscar);
+            nombreBuscar = null;
+        }catch (Exception e){
+            FacesMessage msg1 = new FacesMessage(FacesMessage.SEVERITY_ERROR, "alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("msj-bean", msg1);
+        }
     }
 
 
