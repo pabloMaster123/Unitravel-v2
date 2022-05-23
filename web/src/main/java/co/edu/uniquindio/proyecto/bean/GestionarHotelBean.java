@@ -8,6 +8,7 @@ import co.edu.uniquindio.proyecto.Interfaces.HotelServicio;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +22,7 @@ import java.util.List;
 @ViewScoped
 @Getter
 @Setter
-public class HotelBean implements Serializable {
+public class GestionarHotelBean implements Serializable {
 
     @Autowired
     private HotelServicio hotelServicio;
@@ -34,7 +35,7 @@ public class HotelBean implements Serializable {
 
     private String nombre;
 
-    private String dirrecion;
+    private String direcion;
 
     private Integer numEstrellas;
 
@@ -42,26 +43,34 @@ public class HotelBean implements Serializable {
 
     private Ciudad ciudadHotel;
 
-    private List<AdministradorHotel> administradorHotels;
-
     private AdministradorHotel administradorHotel;
+
+    @Value("#{param['cedula']}")
+    private String cedula;
 
     @PostConstruct
     public void inicializar(){
-        this.ciudades = ciudadServicio.listar();
-        this.administradorHotels = administradorHotelServicio.listar();
+        try{
+            this.ciudades = ciudadServicio.listar();
+            this.administradorHotel = administradorHotelServicio.buscarAdministradorDeHotelPorCedula(cedula);
+        }catch(Exception e){
+            e.printStackTrace();
+
+        }
     }
 
-    public void registrarHotel(){
+    public String registrarHotel(){
         try {
-            hotelServicio.agregarHotel(nombre,dirrecion,numEstrellas,ciudadHotel,administradorHotel);
+            hotelServicio.agregarHotel(nombre, direcion,numEstrellas,ciudadHotel,administradorHotel);
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"alerta", "registro exitoso");
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+            return "/administradorHotel/GestionarHotel.xhtml?faces-redirect=true&amp;cedula="+cedula;
         }catch (Exception e){
             e.printStackTrace();
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"alerta", e.getMessage());
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
         }
+        return null;
     }
 
 

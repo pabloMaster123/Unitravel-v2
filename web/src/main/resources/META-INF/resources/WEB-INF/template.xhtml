@@ -104,6 +104,11 @@
                                          action="#{seguridadBean.redireccionarParaGestionarCuenta(seguridadBean.cliente.cedula)}"/>
                     </h:form>
 
+                    <h:form rendered="#{seguridadBean.autenticadoAdminHotel}">
+                        <p:commandButton value="Gestionar Hoteles" styleClass="btn btn-primary me-2"
+                                         action="#{seguridadBean.redireccionarParaGestionarHoteles(seguridadBean.administradorHotel.cedula)}"/>
+                    </h:form>
+
                     <h:form rendered="#{seguridadBean.autenticado}">
                         <p:commandButton value="Cerrar Sesion" styleClass="btn btn-primary"
                                          action="#{seguridadBean.cerrarSesion}"/>

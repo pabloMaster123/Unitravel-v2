@@ -114,4 +114,8 @@ public class SeguridadBean implements Serializable {
         return "/cliente/GestionarCuenta.xhtml?faces-redirect=true&amp;cedula="+cedula;
     }
 
+    public String redireccionarParaGestionarHoteles(String cedula) {
+        return "/administradorHotel/GestionarHotel.xhtml?faces-redirect=true&amp;cedula="+cedula;
+    }
+
 }

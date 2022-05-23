@@ -62,9 +62,30 @@ public class SeguridadFilter implements Filter {
                         response.sendRedirect(request.getContextPath() + PAGINA_INICIO);
                     }
                 }else{
+                    //Aplicar el filtro a esta carpeta
+                    if (requestURI.startsWith("/administradorHotel/") ) {
+//Obtenemos el objeto seguridadBean de la sesión actual
+                        SeguridadBean userManager = (SeguridadBean) request.getSession().getAttribute("seguridadBean");
+
+                        if (userManager != null) {
+                            if (userManager.isAutenticadoAdminHotel()) {
+//El usuario está logueado entonces si puede ver la página solicitada
+
+                                filterChain.doFilter(servletRequest, servletResponse);
+                            } else {
+//El usuario no está logueado, entonces se redirecciona al inicio
+
+                                response.sendRedirect(request.getContextPath() + PAGINA_INICIO);
+                            }
+                        } else {
+//El usuario no está logueado, entonces se redirecciona al inicio
+                            response.sendRedirect(request.getContextPath() + PAGINA_INICIO);
+                        }
+                    }else{
 //La página solicitada no está en la carpeta /usuario entonces el filtro no aplica
 
-                    filterChain.doFilter(servletRequest, servletResponse);
+                        filterChain.doFilter(servletRequest, servletResponse);
+                    }
                 }
             }
         } catch (Exception e) {
