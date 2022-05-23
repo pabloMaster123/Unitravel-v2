@@ -1,5 +1,6 @@
 plugins {
     id 'org.joinfaces' version '4.6.6'
+    id "org.sonarqube" version "3.3"
 }
 dependencies {
     implementation project(":Negocio")
@@ -7,4 +8,12 @@ dependencies {
     implementation 'org.joinfaces:jsf-spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.primefaces:primefaces:11.0.0'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "pabloMaster123_Unitravel-v2"
+        property "sonar.organization", "pablomaster123"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
