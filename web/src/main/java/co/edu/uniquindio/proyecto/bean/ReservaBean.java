@@ -40,15 +40,15 @@ public class ReservaBean implements Serializable {
     @Autowired
     private ClienteServicio clienteServicio;
 
-    private LocalDate fecha_inicio;
+    private LocalDate fechaInicio;
 
-    private LocalDate fecha_final;
+    private LocalDate fechaFinal;
 
-    private Integer cantidad_cliente;
+    private Integer cantidadClientes;
 
     private List<Silla> sillas;
 
-    private List<Habitacion> habitacions;
+    private List<Habitacion> habitaciones;
 
     private Cliente cliente;
 
@@ -58,14 +58,11 @@ public class ReservaBean implements Serializable {
 
     @PostConstruct
     public void inicializar() throws Exception {
-        this.vuelos = vueloServicio.listar();
-        this.sillas = sillaServicio.listarPorVuelo(vuelo);
-        this.habitacions = habitacionServicio.listarHabitaciones();
     }
 
-    public void agregarReserva(){
+    public void agregarReserva(LocalDate fechaInicio, LocalDate fechaFinal, List<Silla> sillas, List<Habitacion> habitaciones, Cliente cliente){
         try {
-            reservaServicio.agregarReserva(fecha_inicio,fecha_final,cantidad_cliente,sillas,habitacions,cliente);
+            reservaServicio.agregarReserva(fechaInicio,fechaFinal,cantidadClientes,sillas,habitaciones,cliente);
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Alerta", "Registro Exitoso!");
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
         }catch (Exception e){

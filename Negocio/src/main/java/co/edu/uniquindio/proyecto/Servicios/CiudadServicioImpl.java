@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CiudadServicioImpl implements CiudadServicio {
@@ -88,7 +89,11 @@ public class CiudadServicioImpl implements CiudadServicio {
 
     @Override
     public Ciudad obtenerCuidad(Integer id) throws Exception {
-        return ciudadRepo.findById(id).get();
+        Optional<Ciudad> aux = ciudadRepo.findById(id);
+        if(aux.isPresent()){
+            return aux.get();
+        }
+        return null;
     }
 
 }

@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.6.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "org.sonarqube" version "3.3"
 }
 configurations {
     compileOnly {
@@ -30,6 +31,15 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-validation'
         implementation 'org.springframework.boot:spring-boot-starter-data-rest'
         compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+
+//        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+//        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    }
+}
+
+sourceSets {
+    test {
+        java { srcDir '/src/test/java' }
     }
 }
 

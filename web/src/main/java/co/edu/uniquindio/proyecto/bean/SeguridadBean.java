@@ -1,16 +1,11 @@
 package co.edu.uniquindio.proyecto.bean;
 
-import co.edu.uniquindio.proyecto.Entidades.Administrador;
-import co.edu.uniquindio.proyecto.Entidades.AdministradorHotel;
-import co.edu.uniquindio.proyecto.Entidades.Ciudad;
-import co.edu.uniquindio.proyecto.Entidades.Cliente;
-import co.edu.uniquindio.proyecto.Interfaces.AdministradorHotelServicio;
-import co.edu.uniquindio.proyecto.Interfaces.AdministradorServicio;
-import co.edu.uniquindio.proyecto.Interfaces.ClienteServicio;
-import co.edu.uniquindio.proyecto.Interfaces.PersonaServicio;
+import co.edu.uniquindio.proyecto.Entidades.*;
+import co.edu.uniquindio.proyecto.Interfaces.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +14,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Scope("session")
@@ -52,6 +49,27 @@ public class SeguridadBean implements Serializable {
     @Getter @Setter
     private Cliente cliente;
 
+    //DETALLE BEAN
+
+    @Autowired
+    private HabitacionServicio habitacionServicio;
+
+    @Getter @Setter
+    private LocalDate fechaEntrada;
+
+    @Getter @Setter
+    private LocalDate fechaSalida;
+
+    @Getter @Setter
+    private List<Habitacion> habitacionesSeleccionadas;
+
+    @Getter @Setter
+    private List<Silla> sillasSeleccionadas;
+
+    //VUELO BEAN
+    @Getter @Setter
+    private Vuelo vuelo;
+
     @PostConstruct
     public void inicializar() {
         autenticado = false;
@@ -62,6 +80,14 @@ public class SeguridadBean implements Serializable {
         administrador = null;
         administradorHotel = null;
         cliente = null;
+
+        vuelo = null;
+
+        habitacionesSeleccionadas = new ArrayList<Habitacion>();
+        sillasSeleccionadas = null;
+
+        fechaEntrada = null;
+        fechaSalida = null;
     }
 
     public String iniciarSesion(){
@@ -123,9 +149,31 @@ public class SeguridadBean implements Serializable {
 
     public String redireccionarParaVerHoteles() {
         if(autenticadoCliente){
-            return "InicioHoteles.xhtml?faces-redirect=true&amp;cedula="+cliente.getCedula();
+            if(fechaEntrada!= null && fechaSalida != null) {
+                return "/InicioHoteles.xhtml?faces-redirect=true&amp;cedula="+cliente.getCedula()+"&fechaEntrada="+fechaEntrada.toString()+"&fechaSalida="+fechaSalida.toString();
+            } else {
+                return "/InicioHoteles.xhtml?faces-redirect=true&amp;cedula="+cliente.getCedula()+"&fechaEntrada="+""+"&fechaSalida="+"";
+            }
         } else {
-            return "InicioHoteles.xhtml?faces-redirect=true&amp;cedula="+"";
+            return "/InicioHoteles.xhtml?faces-redirect=true&amp;cedula="+""+"&fechaEntrada="+""+"&fechaSalida="+"";
+        }
+    }
+
+    public void seleccionarHabitacion(Integer codigo){
+        try{
+            if(!habitacionesSeleccionadas.isEmpty()){
+                for(int i = 0; i < habitacionesSeleccionadas.size(); i++){
+                    if(habitacionesSeleccionadas.get(i).getCodigo().equals(codigo)){
+                        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"alerta", "Ya esta añadida esta habitacion en el listado.");
+                        FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+                    }
+                }
+            } else {
+                habitacionesSeleccionadas.add(habitacionServicio.buscarHabitacion(codigo));
+                System.out.println(habitacionServicio.buscarHabitacion(codigo).toString());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

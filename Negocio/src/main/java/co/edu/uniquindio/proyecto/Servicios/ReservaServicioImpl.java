@@ -66,7 +66,11 @@ public class ReservaServicioImpl implements ReservaServicio {
 
             reserva.setCostoTotal(costoTotal);
 
+
+
             Reserva aux = reservaRepo.save(reserva);
+
+            System.out.println("Se añadio " + aux.toString());
 
             boolean envioDeCorreo = enviarCorreoConInformacionDeLaReserva(cliente.getEmail(), aux);
 

@@ -1,14 +1,13 @@
 package co.edu.uniquindio.proyecto.bean;
 
 import co.edu.uniquindio.proyecto.Entidades.Ciudad;
-import co.edu.uniquindio.proyecto.Entidades.Hotel;
 import co.edu.uniquindio.proyecto.Entidades.Vuelo;
 import co.edu.uniquindio.proyecto.Interfaces.CiudadServicio;
-import co.edu.uniquindio.proyecto.Interfaces.HotelServicio;
 import co.edu.uniquindio.proyecto.Interfaces.VueloServicio;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -23,7 +22,7 @@ import java.util.List;
 @ViewScoped
 @Getter
 @Setter
-public class ListarVuelolBean implements Serializable {
+public class InicioVuelosBean implements Serializable {
 
     @Autowired
     private VueloServicio vueloServicio;
@@ -42,6 +41,9 @@ public class ListarVuelolBean implements Serializable {
     private Ciudad ciudadDestinoBuscar;
 
     private LocalDate fechaBuscar;
+
+    @Value("#{param['seleccionar']}")
+    private String seleccionar;
 
     @PostConstruct
     void inicializar(){

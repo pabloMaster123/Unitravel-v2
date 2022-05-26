@@ -38,7 +38,7 @@
                         </li>
                         <li>
                             <div jsf:rendered="#{seguridadBean.autenticadoCliente}">
-                                <a href="../cliente/RegistarReserva.xhtml" class="nav-link text-white">
+                                <a href="../cliente/RegistrarReserva.xhtml" class="nav-link text-white">
                                 <i class="pi pi-save bi d-block mx-auto mb-1 icon-menu" style="text-align: center"></i>
                                 Crear Reserva
                             </a>
@@ -46,7 +46,7 @@
                         </li>
                         <li>
                             <div jsf:rendered="#{seguridadBean.autenticadoCliente}">
-                                <a href="../cliente/VuelosDisponibles.xhtml" class="nav-link text-white">
+                                <a href="../cliente/InicioVuelos.xhtml" class="nav-link text-white">
                                     <i class="pi pi-save bi d-block mx-auto mb-1 icon-menu" style="text-align: center"></i>
                                     Vuelos disponibles
                                 </a>
@@ -119,6 +119,9 @@
                         <p:commandButton value="Gestionar Cuenta" styleClass="btn btn-primary me-2"
                                          action="#{seguridadBean.redireccionarParaGestionarCuenta(seguridadBean.cliente.cedula)}"
                                          rendered="#{seguridadBean.autenticadoCliente}"/>
+                        <p:commandButton value="Realizar Reserva" styleClass="btn btn-primary me-2"
+                                         onclick="PF('reserva').show()"
+                                         rendered="#{seguridadBean.autenticadoCliente}"/>
                         <p:commandButton value="Cerrar Sesion" styleClass="btn btn-primary"
                                          action="#{seguridadBean.cerrarSesion}"
                                          rendered="#{seguridadBean.autenticado}"/>
@@ -143,6 +146,19 @@
             <p:commandButton value="Iniciar Sesión" action="#{seguridadBean.iniciarSesion}"
                              styleClass="mt-4" update="@form" icon="pi pi-sign-in" iconPos="left" />
             <p:growl for="login-bean" showDetail="true" />
+        </h:form>
+    </p:dialog>
+
+    <p:dialog header="Seleccionar Fechas" showEffect="fade" widgetVar="reserva" modal="true" rendered="#{seguridadBean.autenticadoCliente}">
+        <h:form >
+            <h:panelGrid columns="2" cellpadding="5">
+                <p:outputLabel value="Fecha Entrada:" for="fecha_e"/>
+                <p:datePicker id="fecha_e" value="#{seguridadBean.fechaEntrada}"/>
+                <p:outputLabel value="Fecha Salida:" for="fecha_s"/>
+                <p:datePicker id="fecha_s" value="#{seguridadBean.fechaSalida}"/>
+            </h:panelGrid>
+            <p:commandButton value="Confirmar Fechas" action="#{seguridadBean.redireccionarParaVerHoteles()}"
+                             styleClass="mt-4" update="@form" icon="pi pi-sign-in" iconPos="left" />
         </h:form>
     </p:dialog>
 

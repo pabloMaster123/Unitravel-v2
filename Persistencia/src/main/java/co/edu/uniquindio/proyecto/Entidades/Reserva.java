@@ -44,7 +44,7 @@ public class Reserva implements Serializable {
     private Vuelo vuelo; //no es necesario
 
     @ManyToMany//DUDA CON ESTA RELACION
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     @ToString.Exclude
     private List<Silla> sillas;
 

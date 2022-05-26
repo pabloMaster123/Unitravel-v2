@@ -10,7 +10,11 @@ public interface HabitacionServicio {
 
     Habitacion agregarHabitacion(Hotel hotel, Double precio) throws Exception;
 
-    List<Habitacion> listarHabitacionesDisponiblesPorFechas(LocalDate entrada, LocalDate salida) throws Exception;
+    List<Habitacion> listarHabitacionesDisponiblesPorFechas(Hotel hotel, LocalDate entrada, LocalDate salida) throws Exception;
 
     List<Habitacion> listarHabitaciones();
+
+    List<Habitacion> listarHabitacionesPorHotel(Hotel hotel) throws Exception;
+
+    Habitacion buscarHabitacion(Integer codigo) throws Exception;
 }

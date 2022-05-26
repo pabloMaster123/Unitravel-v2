@@ -38,6 +38,12 @@ public class InicioHotelesBean implements Serializable {
 
     private String nombreBuscar;
 
+    @Value("#{param['fechaEntrada']}")
+    private String fechaEntrada;
+
+    @Value("#{param['fechaSalida']}")
+    private String fechaSalida;
+
     @Value("#{param['cedula']}")
     private String cedula;
 
@@ -72,6 +78,14 @@ public class InicioHotelesBean implements Serializable {
             this.hoteles = hotelServicio.buscarHotelPorNombre(nombreBuscar);
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public String verDetalle(Integer codigo, boolean autenticado){
+        if(autenticado){
+            return "/DetalleHotel.xhtml?faces-redirect=true&amp;codigoHotel="+codigo+"&seleccionar=true&fechaEntrada="+fechaEntrada+"&fechaSalida="+fechaSalida;
+        } else {
+            return "/DetalleHotel.xhtml?faces-redirect=true&amp;codigoHotel="+codigo+"&seleccionar=false&fechaEntrada="+fechaEntrada+"&fechaSalida="+fechaSalida;
         }
     }
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HabitacionServicioImpl implements HabitacionServicio {
@@ -49,9 +50,9 @@ public class HabitacionServicioImpl implements HabitacionServicio {
     }
 
     @Override
-    public List<Habitacion> listarHabitacionesDisponiblesPorFechas(LocalDate entrada, LocalDate salida) throws Exception {
+    public List<Habitacion> listarHabitacionesDisponiblesPorFechas(Hotel hotel, LocalDate entrada, LocalDate salida) throws Exception {
         if(entrada.isBefore(salida)) {
-            List<Habitacion> habitaciones = listarHabitaciones();
+            List<Habitacion> habitaciones = listarHabitacionesPorHotel(hotel);
             List<Habitacion> listaDefinitiva = new ArrayList<Habitacion>();
             for(int i = 0; i < habitaciones.size(); i++) {
                 List<Reserva> reservas = reservaRepo.listarReservaPorHabitacion(habitaciones.get(i).getCodigo());
@@ -63,6 +64,21 @@ public class HabitacionServicioImpl implements HabitacionServicio {
             return listaDefinitiva;
         } else {
             throw new Exception("La fecha de entrada ingresada es depues que la fecha de salida.");
+        }
+    }
+
+    @Override
+    public List<Habitacion> listarHabitacionesPorHotel(Hotel hotel) throws Exception{
+        return habitacionRepo.findAllByHotel(hotel);
+    }
+
+    @Override
+    public Habitacion buscarHabitacion(Integer codigo) throws Exception {
+        Optional<Habitacion> aux = habitacionRepo.findById(codigo);
+        if(aux.isPresent()) {
+            return aux.get();
+        } else {
+            throw new Exception("No existe una habitacion con el codigo indicado");
         }
     }
 

@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyecto.Entidades.Ciudad;
 import co.edu.uniquindio.proyecto.Entidades.Hotel;
 import co.edu.uniquindio.proyecto.Interfaces.AdministradorHotelServicio;
 import co.edu.uniquindio.proyecto.Interfaces.CiudadServicio;
+import co.edu.uniquindio.proyecto.Interfaces.HabitacionServicio;
 import co.edu.uniquindio.proyecto.Interfaces.HotelServicio;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,9 @@ public class GestionarHotelBean implements Serializable {
 
     @Autowired
     private CiudadServicio ciudadServicio;
+
+    @Autowired
+    private HabitacionServicio habitacionServicio;
 
     private String nombre;
 
@@ -79,7 +83,8 @@ public class GestionarHotelBean implements Serializable {
 
     public String registrarHotel(){
         try {
-            hotelServicio.agregarHotel(nombre, direccion,numEstrellas,ciudadHotel,administradorHotel);
+            Hotel aux = hotelServicio.agregarHotel(nombre, direccion,numEstrellas,ciudadHotel,administradorHotel);
+            agregarHabitaciones(aux);
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"alerta", "registro exitoso");
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
             return "/administradorHotel/GestionarHotel.xhtml?faces-redirect=true&amp;cedula="+cedula;
@@ -89,6 +94,16 @@ public class GestionarHotelBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
         }
         return null;
+    }
+
+    public void agregarHabitaciones(Hotel aux){
+        for(int i = 0; i < 100; i++){
+            try{
+                habitacionServicio.agregarHabitacion(aux, 250000.00);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setearCodigoActualizar(Integer codigo){

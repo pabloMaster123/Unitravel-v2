@@ -99,6 +99,10 @@
                                         </h:panelGrid>
                                     </p:outputPanel>
                                 </div>
+                                <div class="col-lg-2 col-md-1 align-self-center">
+                                    <p:commandButton value="Detalle Hotel" styleClass="ui-button-raised" iconPos="right"
+                                                     action="#{inicioHotelesBean.verDetalle(hotel.codigo, seguridadBean.autenticadoCliente)}"/>
+                                </div>
                             </div>
 
                         </p:dataViewListItem>

@@ -102,8 +102,8 @@ public class HabitacionServicioTest {
         try {
             LocalDate fechaInicio = LocalDate.of(2022, Month.DECEMBER, 26);
             LocalDate fechaFinal = LocalDate.of(2023, Month.JANUARY, 10);
-            habitacionServicio.listarHabitacionesDisponiblesPorFechas(fechaInicio, fechaFinal).forEach(u -> System.out.println(u));
-            Assertions.assertEquals(5, habitacionServicio.listarHabitacionesDisponiblesPorFechas(fechaInicio, fechaFinal).size());
+            habitacionServicio.listarHabitacionesDisponiblesPorFechas(hotel, fechaInicio, fechaFinal).forEach(u -> System.out.println(u));
+            Assertions.assertEquals(5, habitacionServicio.listarHabitacionesDisponiblesPorFechas(hotel, fechaInicio, fechaFinal).size());
         } catch (Exception e) {
             e.printStackTrace();
         }

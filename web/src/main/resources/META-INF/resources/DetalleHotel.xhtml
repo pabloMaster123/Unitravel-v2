@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="WEB-INF/template.xhtml">
+    <ui:define name="title">Detalle Hotel</ui:define>
+
+    <ui:define name="content">
+        <style type="text/css">
+
+            dataView{
+                align-content: center;
+            }
+
+            .ui-dataview .ui-dataview-header .ui-dataview-layout-options{
+                visibility: hidden;
+            }
+
+        </style>
+        <h:form>
+
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <div>
+
+                <div>
+                    <p:panelGrid columns="2" cellpadding="5">
+                        <h:outputText value="Nombre:"/>
+                        <h:outputText value="#{detalleHotelBean.hotel.nombre}" style="font-weight:bold"/>
+                        <h:outputText value="Numero de Estrellas:"/>
+                        <h:outputText value="#{detalleHotelBean.hotel.numeroDeEstrellas}" style="font-weight:bold"/>
+                        <h:outputText value="Ciudad:"/>
+                        <h:outputText value="#{detalleHotelBean.hotel.destino}" style="font-weight:bold"/>
+                        <h:outputText value="Direccion:"/>
+                        <h:outputText value="#{detalleHotelBean.hotel.direccion}" style="font-weight:bold"/>
+                    </p:panelGrid>
+                </div>
+
+                <div>
+                    <p:dataView value="#{detalleHotelBean.habitaciones}" var="habitacion">
+                        <f:facet name="header">
+                            Listado de habitaciones
+                        </f:facet>
+                        <p:dataViewListItem>
+                            <div class="row item-pro" align="center">
+                                <div class="col-lg-8 col-md-1 align-self-center">
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Numero:"/>
+                                            <h:outputText value="#{habitacion.numero}" style="font-weight:bold"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                </div>
+                                <div class="col-lg-2 col-md-1 align-self-center">
+                                    <p:commandButton value="Agregar" styleClass="ui-button-raised" iconPos="right"
+                                                     action="#{seguridadBean.seleccionarHabitacion(habitacion.codigo)}"
+                                                     update="@form"/>
+                                </div>
+                            </div>
+
+                        </p:dataViewListItem>
+                    </p:dataView>
+                    <div class="col-lg-2 col-md-1 align-self-center">
+                        <p:commandButton value="Continuar Con Reserva" styleClass="ui-button-raised" iconPos="right"
+                                         onclick="PF('eleccionVuelo').show()"
+                                         rendered="#{detalleHotelBean.seleccionarBoolean}"/>
+                    </div>
+                </div>
+
+            </div>
+
+            <p:dialog header="Seleccion Vuelo" showEffect="fade" widgetVar="eleccionVuelo" modal="true" rendered="#{seguridadBean.autenticadoCliente}">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:commandButton value="Quiero Vuelo" action="#{detalleHotelBean.redireccionarParaReservar(true)}" update="@form"/>
+                    <p:commandButton value="NO Quiero Vuelo" action="#{detalleHotelBean.redireccionarParaReservar(false)}" update="@form"/>
+                </h:panelGrid>
+
+            </p:dialog>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>
