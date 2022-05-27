@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../WEB-INF/template.xhtml">
+    <ui:define name="title">Gestionar Cuenta</ui:define>
+
+    <ui:define name="content">
+
+        <style type="text/css">
+
+            dataView{
+                align-content: center;
+            }
+
+            .ui-dataview .ui-dataview-header .ui-dataview-layout-options{
+                visibility: hidden;
+            }
+
+        </style>
+
+        <h:form>
+            <p:dataView value="#{gestionarCuentaBean.cliente}" var="caracteristica">
+                <p:dataViewListItem>
+                    <div class="row item-pro">
+                        <div class="col-lg-8 col-md-1 align-self-center">
+                            <p:outputPanel>
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputLabel value="Nombre:" for="nombre" style="font-weight:bold"/>
+                                    <h:outputText id="nombre" value="#{caracteristica.nombre}" />
+                                    <h:outputLabel value="Cedula:" for="cedula" style="font-weight:bold"/>
+                                    <h:outputText id="cedula" value="#{caracteristica.cedula}"/>
+                                    <h:outputLabel value="Ciudad:" for="ciudad" style="font-weight:bold"/>
+                                    <h:outputText id="ciudad" value="#{caracteristica.ciudad.nombre}"/>
+                                    <h:outputLabel value="Email:" for="email" style="font-weight:bold"/>
+                                    <h:outputText id="email" value="#{caracteristica.email}"/>
+                                    <h:outputLabel value="Contrasena:" for="contrasena" style="font-weight:bold"/>
+                                    <h:outputText id="contrasena" value="#{caracteristica.password}"/>
+                                </h:panelGrid>
+                                <p:commandButton value="Editar" onclick="PF('editar').show()"/>
+                            </p:outputPanel>
+                        </div>
+
+                    </div>
+                </p:dataViewListItem>
+            </p:dataView>
+            <p:dialog header="Actualizar Informacion" showEffect="fade" widgetVar="editar" modal="true" rendered="#{seguridadBean.autenticadoCliente}">
+                <p:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="Nombre Nuevo:" for="nombre_c"/>
+                    <p:inputText id="nombre_c" value="#{gestionarCuentaBean.nombreNuevo}"/>
+
+                    <p:outputLabel value="Email:" for="email_c"/>
+                    <p:inputText id="email_c" value="#{gestionarCuentaBean.emailNuevo}"/>
+
+                    <p:outputLabel value="Password:" for="password_c"/>
+                    <p:inputText id="password_c" value="#{gestionarCuentaBean.passwordNueva}"/>
+
+                    <p:outputLabel value="Ciudad" for="ciudad_c"/>
+                    <p:selectOneMenu id="ciudad_c" value="#{gestionarCuentaBean.ciudadNueva}" converter="#{ciudadConverter}">
+                        <f:selectItem itemLabel="Seleccione la ciudad en la que vive" noSelectionOption="true"/>
+                        <f:selectItems var="ciudadNueva" itemLabel="#{ciudadNueva.nombre}"
+                                       value="#{gestionarCuentaBean.ciudades}"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:commandButton value="Actualizar Cliente" action="#{gestionarCuentaBean.actualizar}"
+                                 styleClass="mt-4" update="@form" icon="pi pi-sign-in" iconPos="left" />
+            </p:dialog>
+            <p:outputPanel>
+
+                <p:dataView value="#{gestionarCuentaBean.telefonos}" var="telefono"  rows="10" paginator="true" rowsPerPageTemplate="10,15,20">
+                    <f:facet name="header">
+                        Listado de telefonos
+                    </f:facet>
+                    <p:dataViewListItem>
+                        <div class="row item-pro" align="center">
+                            <div class="col-lg-8 col-md-1 align-self-center">
+                                <p:outputPanel>
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputText value="Numero:"/>
+                                        <h:outputText value="#{telefono.toString()}" style="font-weight:bold"/>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                            </div>
+                            <div class="col-lg-2 col-md-1 align-self-center">
+                                    <p:commandButton value="Eliminar" styleClass="ui-button-raised" iconPos="right"
+                                                     action="#{gestionarCuentaBean.eliminarTelefono(telefono)}"/>
+                            </div>
+                        </div>
+                    </p:dataViewListItem>
+                </p:dataView>
+
+            </p:outputPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

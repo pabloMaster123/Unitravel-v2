@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../WEB-INF/template.xhtml">
+    <ui:define name="title">Gestionar Vuelo</ui:define>
+
+    <ui:define name="content">
+
+        <style type="text/css">
+
+            dataView{
+                align-content: center;
+            }
+
+            .ui-dataview .ui-dataview-header .ui-dataview-layout-options{
+                visibility: hidden;
+            }
+
+        </style>
+        <h:form>
+
+
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+            <div>
+                <p:panelGrid columns="2" cellpadding="5" id="panelAgregarVuelo">
+                    <p:commandButton value="Agregar Vuelo" onclick="PF('registrar').show()"/>
+                </p:panelGrid>
+            </div>
+
+            <p:dialog header="Registro de Vuelo" showEffect="fade" widgetVar="registrar" modal="true" rendered="#{seguridadBean.autenticadoAdmin}">
+                <h:panelGrid columns="2" cellpadding="5">
+
+                    <p:outputLabel value="Cantidad de sillas:" for="cantidad_sillas"/>
+                    <p:inputText id="cantidad_sillas" value="#{gestionarVueloBean.cantidadSillas}"/>
+
+                    <p:outputLabel value="Fecha Vuelo:" for="fecha_p"/>
+                    <p:datePicker id="fecha_p" value="#{gestionarVueloBean.fecha}"/>
+
+                    <p:outputLabel value="Origen:" for="ciudad_o"/>
+                    <p:selectOneMenu id="ciudad_o" value="#{gestionarVueloBean.ciudadOrigen}" converter="#{ciudadConverter}">
+                        <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true"/>
+                        <f:selectItems var="caracteristica" itemLabel="#{caracteristica.nombre}"
+                                       value="#{gestionarVueloBean.ciudades}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Destino:" for="ciudad_d"/>
+                    <p:selectOneMenu id="ciudad_d" value="#{gestionarVueloBean.ciudadDestino}" converter="#{ciudadConverter}">
+                        <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true"/>
+                        <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                       value="#{gestionarVueloBean.ciudades}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+                <p:commandButton value="Registrar Vuelo" action="#{gestionarVueloBean.registrarVuelo}" update="@form"/>
+            </p:dialog>
+
+            <p:panelGrid columns="2" cellpadding="50" layout="flex">
+
+                <p:outputPanel>
+                    <div align="right">
+                        <p:panelGrid columns="1" cellpadding="5" id="panelBuscar">
+                            <p:inputText id="vueloParaBuscar" placeholder="Ingrese una vuelo" value="#{gestionarVueloBean.codigoVuelo}"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Buscar Vuelo" action="#{gestionarVueloBean.buscarVuelo}" update="@form" for="panelBuscar"/>
+
+                    </div>
+                </p:outputPanel>
+
+                <p:outputPanel>
+                    <p:panelGrid columns="1" cellpadding="3.5" id="panelBuscarCiudad">
+                    <div align="left">
+                        <p:outputLabel value="Origen:" for="ciudad_o_Buscar"/>
+                        <p:selectOneMenu id="ciudad_o_Buscar" value="#{gestionarVueloBean.ciudadOrigenBuscar}" converter="#{ciudadConverter}">
+                            <f:selectItem itemLabel="Seleccione una ciudad de Origen" noSelectionOption="true"/>
+                            <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                           value="#{gestionarVueloBean.ciudades}"/>
+                        </p:selectOneMenu>
+                            <p:commandButton value="Buscar Vuelo Origen" action="#{gestionarVueloBean.buscarVueloCiuddaOrigen()}" update="@form" for="panelBuscarCiudad"/>
+                    </div>
+
+                    <div align="left">
+                            <p:outputLabel value="Destino:" for="ciudad_d_Buscar"/>
+                        <p:selectOneMenu id="ciudad_d_Buscar" value="#{gestionarVueloBean.ciudadDestinoBuscar}" converter="#{ciudadConverter}">
+                            <f:selectItem itemLabel="Seleccione una ciudad de Destino" noSelectionOption="true"/>
+                            <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                           value="#{gestionarVueloBean.ciudades}"/>
+                        </p:selectOneMenu>
+                            <p:commandButton value="Buscar Vuelo Destino" action="#{gestionarVueloBean.buscarVueloCiudadDestino()}" update="@form" for="panelBuscarCiudad"/>
+                    </div>
+                    </p:panelGrid>
+                </p:outputPanel>
+
+                <p:outputPanel>
+
+                    <p:dataView value="#{gestionarVueloBean.vuelos}" var="vuelo" >
+                        <f:facet name="header">
+                            Listado de Vuelos
+                        </f:facet>
+                        <p:dataViewListItem>
+                            <div class="row item-pro" align="center">
+                                <div class="col-lg-8 col-md-1 align-self-center">
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Fecha:"/>
+                                            <h:outputText value="#{vuelo.fecha}" style="font-weight:bold"/>
+                                            <h:outputText value="Cantidad de Sillas:"/>
+                                            <h:outputText value="#{vuelo.cantidadDeSillas}" style="font-weight:bold"/>
+                                            <h:outputText value="Ciudad Origen:"/>
+                                            <h:outputText value="#{vuelo.origen.nombre}" style="font-weight:bold"/>
+                                            <h:outputText value="Ciudad Destino:"/>
+                                            <h:outputText value="#{vuelo.destino.nombre}" style="font-weight:bold"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                </div>
+                                <div class="col-lg-2 col-md-1 align-self-center">
+                                    <p:panelGrid columns="2" cellpadding="5">
+                                        <p:commandButton value="Eliminar" styleClass="ui-button-raised" iconPos="right"
+                                                         action="#{gestionarVueloBean.eliminarVuelo(vuelo.codigo)}"/>
+                                        <p:commandButton value="Actualizar" styleClass="ui-button-raised" iconPos="right"
+                                                         action="#{gestionarVueloBean.definirVueloActualizar(vuelo)}" onclick="PF('actualizar').show()"/>
+                                    </p:panelGrid>
+                                </div>
+                                <p:dialog header="Actualizacion de Vuelo" showEffect="fade" widgetVar="actualizar" modal="true" rendered="#{seguridadBean.autenticadoAdmin}">
+                                    <h:panelGrid columns="2" cellpadding="5">
+
+                                        <p:outputLabel value="Cantidad de sillas nueva:" for="cantidad_sillas_nueva"/>
+                                        <p:inputText id="cantidad_sillas_nueva" value="#{gestionarVueloBean.cantidadSillasNueva}"/>
+
+                                        <p:outputLabel value="Fecha Vuelo:" for="fecha_p_nueva"/>
+                                        <p:datePicker id="fecha_p_nueva" value="#{gestionarVueloBean.fechaNueva}"/>
+
+                                        <p:outputLabel value="Origen:" for="ciudad_o_nueva"/>
+                                        <p:selectOneMenu id="ciudad_o_nueva" value="#{gestionarVueloBean.ciudadOrigenNueva}" converter="#{ciudadConverter}">
+                                            <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true"/>
+                                            <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                                           value="#{gestionarVueloBean.ciudades}"/>
+                                        </p:selectOneMenu>
+
+                                        <p:outputLabel value="Destino:" for="ciudad_d_nueva"/>
+                                        <p:selectOneMenu id="ciudad_d_nueva" value="#{gestionarVueloBean.ciudadDestinoNueva}" converter="#{ciudadConverter}">
+                                            <f:selectItem itemLabel="Seleccione una ciudad" noSelectionOption="true"/>
+                                            <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                                           value="#{gestionarVueloBean.ciudades}"/>
+                                        </p:selectOneMenu>
+
+                                    </h:panelGrid>
+                                    <p:commandButton value="Actualizar Vuelo" action="#{gestionarVueloBean.actualizarVuelo()}" update="@form"/>
+                                </p:dialog>
+                            </div>
+                        </p:dataViewListItem>
+                    </p:dataView>
+
+                </p:outputPanel>
+
+            </p:panelGrid>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

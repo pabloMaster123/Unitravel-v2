@@ -1,19 +1,51 @@
 plugins {
+    id 'org.springframework.boot' version '2.6.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "org.sonarqube" version "3.3"
+}
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
+allprojects {
+    group = 'co.edu.uniquindio.ingesis'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
+    repositories {
+        mavenCentral()
+    }
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+        compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    }
 }
 
-test {
-    useJUnitPlatform()
+bootJar{
+    enabled = false
+}
+
+jar{
+    enabled = true
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "pabloMaster123_Unitravel-v2"
+        property "sonar.organization", "pablomaster123"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }

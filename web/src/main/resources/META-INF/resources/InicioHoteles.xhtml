@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="WEB-INF/template.xhtml">
+    <ui:define name="title">Hoteles</ui:define>
+
+    <ui:define name="content">
+        <style type="text/css">
+
+            dataView{
+                align-content: center;
+            }
+
+            .ui-dataview .ui-dataview-header .ui-dataview-layout-options{
+                visibility: hidden;
+            }
+
+        </style>
+        <h:form>
+
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <div>
+
+                <div>
+                    <p:panelGrid columns="1" cellpadding="5">
+                        <div>
+                            <p:outputPanel>
+                                <div>
+                                    <p:outputLabel value="Ciudad:" for="ciudad_seleccion"/>
+                                    <p:selectOneMenu id="ciudad_seleccion" value="#{inicioHotelesBean.ciudad}" converter="#{ciudadConverter}">
+                                        <f:selectItem itemLabel="Seleccione una ciudad." noSelectionOption="true"/>
+                                        <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                                       value="#{inicioHotelesBean.ciudades}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div>
+                                    <p:commandButton value="Buscar Hotel Por Ciudad" action="#{inicioHotelesBean.listarPorCiudad()}" update="@form"/>
+                                </div>
+
+                            </p:outputPanel>
+                        </div>
+
+                        <div>
+                            <p:outputPanel>
+
+                                <div>
+                                    <p:outputLabel value="Cantidad De Estrellas:" for="estrellas"/>
+                                    <p:inputText id="estrellas" placeholder="Ingrese una cantidad" value="#{inicioHotelesBean.cantidadDeEstrellas}"/>
+                                </div>
+                                <div>
+                                    <p:commandButton value="Buscar Hotel Por Cantidad De Estrellas" action="#{inicioHotelesBean.listarPorCantidadDeEstrellas()}" update="@form"/>
+                                </div>
+
+                            </p:outputPanel>
+                        </div>
+
+                        <div>
+                            <p:outputPanel>
+
+                                <div>
+                                    <p:outputLabel value="Nombre De Hotel:" for="nombreBuscar"/>
+                                    <p:inputText id="nombreBuscar" placeholder="Ingrese un nombre" value="#{inicioHotelesBean.nombreBuscar}"/>
+                                </div>
+                                <div>
+                                    <p:commandButton value="Buscar Hotel Por Nombre" action="#{inicioHotelesBean.listarPorCoindicencia()}" update="@form"/>
+                                </div>
+
+                            </p:outputPanel>
+                        </div>
+                    </p:panelGrid>
+                </div>
+
+                <div>
+                    <p:dataView value="#{inicioHotelesBean.hoteles}" var="hotel">
+                        <f:facet name="header">
+                            Listado de hoteles
+                        </f:facet>
+                        <p:dataViewListItem>
+                            <div class="row item-pro" align="center">
+                                <div class="col-lg-8 col-md-1 align-self-center">
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Nombre:"/>
+                                            <h:outputText value="#{hotel.nombre}" style="font-weight:bold"/>
+                                            <h:outputText value="Numero de Estrellas:"/>
+                                            <h:outputText value="#{hotel.numeroDeEstrellas}" style="font-weight:bold"/>
+                                            <h:outputText value="Ciudad:"/>
+                                            <h:outputText value="#{hotel.destino.nombre}" style="font-weight:bold"/>
+                                            <h:outputText value="Direccion:"/>
+                                            <h:outputText value="#{hotel.direccion}" style="font-weight:bold"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                </div>
+                            </div>
+
+                        </p:dataViewListItem>
+                    </p:dataView>
+                </div>
+
+            </div>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>
