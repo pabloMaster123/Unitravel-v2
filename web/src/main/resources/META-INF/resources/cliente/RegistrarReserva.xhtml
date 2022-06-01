@@ -17,9 +17,11 @@
                     <p:outputLabel value="Cantidad_Cliente:" for="cantidad_R"/>
                     <p:inputText id="cantidad_R" value="#{reservaBean.cantidadClientes}" required="true" />
 
-                    <p:commandButton value="Registrar Reserva" action="#{reservaBean.agregarReserva(seguridadBean.fechaEntrada, seguridadBean.fechaSalida, seguridadBean.sillasSeleccionadas, seguridadBean.habitacionesSeleccionadas, seguridadBean.cliente)}" update="@form"/>
+                    <p:commandButton value="Registrar Reserva" action="#{reservaBean.agregarReserva}" update="@form"/>
 
             </p:panelGrid>
+
+            <p:growl for="msj-bean" showDetail="true" />
         </h:form>
     </ui:define>
 </ui:composition>

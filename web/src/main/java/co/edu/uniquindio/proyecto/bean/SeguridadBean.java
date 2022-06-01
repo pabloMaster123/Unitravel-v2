@@ -84,7 +84,7 @@ public class SeguridadBean implements Serializable {
         vuelo = null;
 
         habitacionesSeleccionadas = new ArrayList<Habitacion>();
-        sillasSeleccionadas = null;
+        sillasSeleccionadas = new ArrayList<Silla>();
 
         fechaEntrada = null;
         fechaSalida = null;
@@ -160,13 +160,19 @@ public class SeguridadBean implements Serializable {
     }
 
     public void seleccionarHabitacion(Integer codigo){
+        boolean centinela = true;
         try{
             if(!habitacionesSeleccionadas.isEmpty()){
                 for(int i = 0; i < habitacionesSeleccionadas.size(); i++){
                     if(habitacionesSeleccionadas.get(i).getCodigo().equals(codigo)){
+                        centinela = false;
                         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"alerta", "Ya esta añadida esta habitacion en el listado.");
                         FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
                     }
+                }
+                if(centinela) {
+                    habitacionesSeleccionadas.add(habitacionServicio.buscarHabitacion(codigo));
+                    System.out.println(habitacionServicio.buscarHabitacion(codigo).toString());
                 }
             } else {
                 habitacionesSeleccionadas.add(habitacionServicio.buscarHabitacion(codigo));

@@ -8,6 +8,7 @@ import co.edu.uniquindio.proyecto.Interfaces.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -40,33 +41,37 @@ public class ReservaBean implements Serializable {
     @Autowired
     private ClienteServicio clienteServicio;
 
-    private LocalDate fechaInicio;
-
+    @Value(value = "#{seguridadBean.fechaSalida}")
     private LocalDate fechaFinal;
 
     private Integer cantidadClientes;
 
+    @Value(value = "#{seguridadBean.sillasSeleccionadas}")
     private List<Silla> sillas;
 
+    @Value(value = "#{seguridadBean.habitacionesSeleccionadas}")
     private List<Habitacion> habitaciones;
 
+    @Value(value = "#{seguridadBean.cliente}")
     private Cliente cliente;
 
     private List<Vuelo> vuelos;
 
     private Vuelo vuelo;
 
-    @PostConstruct
-    public void inicializar() throws Exception {
-    }
+    @Value(value = "#{seguridadBean.fechaEntrada}")
+    private LocalDate fechaInicio;
 
-    public void agregarReserva(LocalDate fechaInicio, LocalDate fechaFinal, List<Silla> sillas, List<Habitacion> habitaciones, Cliente cliente){
+    public void agregarReserva(){
         try {
-            reservaServicio.agregarReserva(fechaInicio,fechaFinal,cantidadClientes,sillas,habitaciones,cliente);
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Alerta", "Registro Exitoso!");
-            FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+            if(cliente!=null) {
+                reservaServicio.agregarReserva(fechaInicio, fechaFinal, cantidadClientes, sillas, habitaciones, cliente);
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Registro Exitoso!");
+                FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+            }
         }catch (Exception e){
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"alerta", e.getMessage());
+            e.printStackTrace();
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Alerta", e.getMessage());
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
         }
     }

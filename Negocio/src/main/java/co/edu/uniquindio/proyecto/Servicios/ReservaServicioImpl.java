@@ -35,54 +35,60 @@ public class ReservaServicioImpl implements ReservaServicio {
     @Override
     public Reserva agregarReserva(LocalDate fechaInicio, LocalDate fechaFinal, Integer cantidadDeClientes, List<Silla> sillas, List<Habitacion> habitaciones, Cliente cliente) throws Exception {
 
-        if(fechaInicio.isBefore(fechaFinal)) {
-            Reserva reserva = new Reserva(fechaInicio,fechaFinal,cantidadDeClientes, cliente);
-            Double costoTotal = 0.0;
-            Integer diasDeLaReserva = 0;
+        System.out.println("Agregar reserva");
 
-            if (!sillas.isEmpty()) {
-                reserva.setVuelo(sillas.get(0).getVuelo());
-                reserva.setSillas(sillas);
-                Double costoSillas = 0.0;
-                for (int i = 0; i < sillas.size(); i++) {
-                    costoSillas += sillas.get(i).getValor();
+        try {
+
+            if (fechaInicio.isBefore(fechaFinal)) {
+                Reserva reserva = new Reserva(fechaInicio, fechaFinal, cantidadDeClientes, cliente);
+                Double costoTotal = 0.0;
+                Integer diasDeLaReserva = 0;
+
+                if (!sillas.isEmpty()) {
+                    reserva.setVuelo(sillas.get(0).getVuelo());
+                    reserva.setSillas(sillas);
+                    Double costoSillas = 0.0;
+                    for (int i = 0; i < sillas.size(); i++) {
+                        costoSillas += sillas.get(i).getValor();
+                    }
+                    costoTotal += costoSillas;
                 }
-                costoTotal += costoSillas;
-            }
 
-            if (habitaciones.isEmpty()){
-                throw new Exception("No hay habitaciones, por ende no se puede proceder con la reserva");
-            } else {
-                reserva.setHabitaciones(habitaciones);
-                Double costoHabitaciones = 0.0;
-                for (int i = 0; i < habitaciones.size(); i++) {
-                    costoHabitaciones += habitaciones.get(i).getPrecio();
+                if (habitaciones.isEmpty()) {
+                    throw new Exception("No hay habitaciones, por ende no se puede proceder con la reserva");
+                } else {
+                    reserva.setHabitaciones(habitaciones);
+                    Double costoHabitaciones = 0.0;
+                    for (int i = 0; i < habitaciones.size(); i++) {
+                        costoHabitaciones += habitaciones.get(i).getPrecio();
+                    }
+                    diasDeLaReserva = (int) ChronoUnit.DAYS.between(fechaInicio, fechaFinal);
+
+                    costoTotal += costoHabitaciones * diasDeLaReserva;
+                    costoTotal += costoTotal + ((costoTotal * 19) / 100);
                 }
-                diasDeLaReserva = (int) ChronoUnit.DAYS.between(fechaInicio, fechaFinal);
 
-                costoTotal += costoHabitaciones * diasDeLaReserva;
-                costoTotal += costoTotal + ((costoTotal*19)/100);
-            }
-
-            reserva.setCostoTotal(costoTotal);
+                reserva.setCostoTotal(costoTotal);
 
 
+                Reserva aux = reservaRepo.save(reserva);
 
-            Reserva aux = reservaRepo.save(reserva);
+                System.out.println("Se añadio " + aux.toString());
 
-            System.out.println("Se añadio " + aux.toString());
+                boolean envioDeCorreo = enviarCorreoConInformacionDeLaReserva(cliente.getEmail(), aux);
 
-            boolean envioDeCorreo = enviarCorreoConInformacionDeLaReserva(cliente.getEmail(), aux);
-
-            if (envioDeCorreo == true) {
-                return aux;
+                if (envioDeCorreo == true) {
+                    return aux;
+                } else {
+                    throw new Exception("Ha ocurrido un error con el registro de la reserva. Intentelo de nuevo.");
+                }
             } else {
-                throw new Exception("Ha ocurrido un error con el registro de la reserva. Intentelo de nuevo.");
+                throw new Exception("La fecha de inicio ingresada no es antes que la fecha final.");
             }
-        } else {
-            throw new Exception("La fecha de inicio ingresada no es antes que la fecha final.");
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
         }
-
     }
 
     @Override
