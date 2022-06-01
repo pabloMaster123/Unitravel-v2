@@ -37,12 +37,6 @@ subprojects {
     }
 }
 
-sourceSets {
-    test {
-        java { srcDir '/src/test/java' }
-    }
-}
-
 bootJar{
     enabled = false
 }
