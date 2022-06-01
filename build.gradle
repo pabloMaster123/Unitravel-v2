@@ -50,3 +50,11 @@ bootJar{
 jar{
     enabled = true
 }
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "pabloMaster123_Unitravel-v2"
+        property "sonar.organization", "pablomaster123"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}

@@ -4,6 +4,7 @@
 #Archivos temporales de Maven
 /**/build/
 
+/.gradle
 #Archivos de Intellij
 *.iml
 /.idea
