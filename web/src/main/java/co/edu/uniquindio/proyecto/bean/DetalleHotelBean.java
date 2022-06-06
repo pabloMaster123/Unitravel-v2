@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -48,6 +50,10 @@ public class DetalleHotelBean implements Serializable {
 
     private boolean seleccionarBoolean;
 
+    private String cantidadHabitacionAgregar;
+
+    private String precio;
+
 
     @PostConstruct
     public void inicializar(){
@@ -64,6 +70,22 @@ public class DetalleHotelBean implements Serializable {
             e.printStackTrace();
 
         }
+    }
+
+    public void agregarHabitaciones(){
+        Double precio = Double.parseDouble(this.precio);
+        Integer cantidad = Integer.parseInt(this.cantidadHabitacionAgregar);
+        try{
+            for(int i = 0; i < cantidad; i++){
+                habitacionServicio.agregarHabitacion(this.hotel, precio);
+            }
+            habitaciones = habitacionServicio.listarHabitacionesPorHotel(hotel);
+        }catch(Exception e) {
+            e.printStackTrace();
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+        }
+
     }
 
     public String redireccionarParaReservar(boolean vuelo){

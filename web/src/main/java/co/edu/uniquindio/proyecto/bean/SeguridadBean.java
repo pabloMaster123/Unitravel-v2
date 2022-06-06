@@ -110,6 +110,22 @@ public class SeguridadBean implements Serializable {
         return null;
     }
 
+    public String recuperarContrasena(){
+        try{
+            if(!email.isEmpty()){
+                int tipo = personaServicio.verificarTipoDeUsuario(email);
+                if(tipo==3) {
+                    clienteServicio.recuperarPasswordUsandoCorreoElectronico(email);
+                    return "index?faces-redirect=true";
+                }
+            }
+        }catch(Exception e){
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+        }
+        return null;
+    }
+
     public void iniciarUsuario(int tipo){
         try{
             switch(tipo){

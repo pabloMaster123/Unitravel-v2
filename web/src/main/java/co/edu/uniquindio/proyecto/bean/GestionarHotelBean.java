@@ -84,7 +84,7 @@ public class GestionarHotelBean implements Serializable {
     public String registrarHotel(){
         try {
             Hotel aux = hotelServicio.agregarHotel(nombre, direccion,numEstrellas,ciudadHotel,administradorHotel);
-            agregarHabitaciones(aux);
+//            agregarHabitaciones(aux);
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"alerta", "registro exitoso");
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
             return "/administradorHotel/GestionarHotel.xhtml?faces-redirect=true&amp;cedula="+cedula;

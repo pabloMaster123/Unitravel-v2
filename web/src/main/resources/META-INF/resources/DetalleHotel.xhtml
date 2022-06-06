@@ -27,6 +27,8 @@
                 <p:autoUpdate/>
             </p:messages>
 
+
+
             <div>
 
                 <div>
@@ -42,6 +44,10 @@
                     </p:panelGrid>
                 </div>
 
+                <p:commandButton value="Agregar Habitacion" styleClass="ui-button-raised" iconPos="right"
+                                 onclick="PF('crearHabitacion').show()"
+                                 rendered="#{seguridadBean.autenticadoAdminHotel}"/>
+
                 <div>
                     <p:dataView value="#{detalleHotelBean.habitaciones}" var="habitacion" rows="10" paginator="true">
                         <f:facet name="header">
@@ -54,6 +60,8 @@
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <h:outputText value="Numero:"/>
                                             <h:outputText value="#{habitacion.numero}" style="font-weight:bold"/>
+                                            <h:outputText value="Precio:"/>
+                                            <h:outputText value="#{habitacion.precio}" style="font-weight:bold"/>
                                         </h:panelGrid>
                                     </p:outputPanel>
                                 </div>
@@ -81,6 +89,18 @@
                     <p:commandButton value="Quiero Vuelo" action="#{detalleHotelBean.redireccionarParaReservar(true)}" update="@form"/>
                     <p:commandButton value="NO Quiero Vuelo" action="#{detalleHotelBean.redireccionarParaReservar(false)}" update="@form"/>
                 </h:panelGrid>
+
+            </p:dialog>
+
+            <p:dialog header="Crear Habitacion" showEffect="fade" widgetVar="crearHabitacion" modal="true" rendered="#{seguridadBean.autenticadoAdminHotel}">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="cantidadHabitacion" value="Cantidad:" />
+                    <p:inputText id="cantidadHabitacion" value="#{detalleHotelBean.cantidadHabitacionAgregar}" />
+                    <p:outputLabel for="precioHabitacion" value="Precio:" />
+                    <p:inputText id="precioHabitacion" value="#{detalleHotelBean.precio}" />
+                </h:panelGrid>
+
+                <p:commandButton value="Agregar" action="#{detalleHotelBean.agregarHabitaciones()}" update="@form"/>
 
             </p:dialog>
 
