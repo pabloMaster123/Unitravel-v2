@@ -45,10 +45,25 @@ public class InicioVuelosBean implements Serializable {
     @Value("#{param['seleccionar']}")
     private String seleccionar;
 
+    private boolean seleccionarBoolean;
+
+    @Value(value = "#{seguridadBean.fechaEntrada}")
+    private LocalDate fechaInicio;
+
     @PostConstruct
     void inicializar(){
         this.vuelos = vueloServicio.listar();
-        this.ciudades = ciudadServicio.listar();
+        this.seleccionarBoolean = false;
+        try{
+            if(this.seleccionar.equals("true")) {
+                this.seleccionarBoolean = true;
+                this.vuelos = vueloServicio.buscarVueloPorFecha(fechaInicio);
+            } else {
+                this.ciudades = ciudadServicio.listar();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void buscarVueloCiuddaOrigen() {

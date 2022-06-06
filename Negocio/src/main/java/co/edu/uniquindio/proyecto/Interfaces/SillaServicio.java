@@ -13,4 +13,6 @@ public interface SillaServicio {
 
     public boolean verificarExistenciaDeNumero(Vuelo vuelo, int numero) ;
 
+    public boolean verificarDisponibilidad(Vuelo vuelo, Integer cantidad) throws Exception;
+
     }

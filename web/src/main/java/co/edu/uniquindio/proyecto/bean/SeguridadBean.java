@@ -34,6 +34,9 @@ public class SeguridadBean implements Serializable {
     @Autowired
     private PersonaServicio personaServicio;
 
+    @Autowired
+    private SillaServicio sillaServicio;
+
     @Getter @Setter
     private String email, password;
 
@@ -69,6 +72,9 @@ public class SeguridadBean implements Serializable {
     //VUELO BEAN
     @Getter @Setter
     private Vuelo vuelo;
+
+    @Getter @Setter
+    private String cantidadSillas;
 
     @PostConstruct
     public void inicializar() {
@@ -130,7 +136,7 @@ public class SeguridadBean implements Serializable {
     public String cerrarSesion() {
         autenticado = false;
         autenticadoAdmin = false;
-        autenticadoAdminHotel = false;
+        autenticadoCliente = false;
         autenticadoAdminHotel = false;
         administrador = null;
         administradorHotel = null;
@@ -181,6 +187,29 @@ public class SeguridadBean implements Serializable {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String seleccionarSillas() {
+        Integer cantidad = Integer.parseInt(cantidadSillas);
+        System.out.println("Entro en 1");
+        try {
+            if(sillaServicio.verificarDisponibilidad(vuelo, cantidad)) {
+                System.out.println("Entro en 2");
+                for(int i = 0; i < cantidad; i++) {
+                    sillasSeleccionadas.add(sillaServicio.agregarSilla(150000.00,false, vuelo));
+                }
+                return "/cliente/RegistrarReserva.xhtml?faces-redirect=true";
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"alerta", e.getMessage());
+            FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+        }
+        return null;
+    }
+
+    public void seleccionarVuelo(Vuelo vuelo) {
+        this.vuelo = vuelo;
     }
 
 }

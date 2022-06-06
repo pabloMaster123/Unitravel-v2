@@ -78,6 +78,20 @@
                                         </h:panelGrid>
                                     </p:outputPanel>
                                 </div>
+                                <div class="col-lg-2 col-md-1 align-self-center">
+                                    <p:commandButton value="Seleccionar Vuelo" styleClass="ui-button-raised" iconPos="right"
+                                                     action="#{seguridadBean.seleccionarVuelo(vuelo)}"
+                                                    rendered="#{inicioVuelosBean.seleccionarBoolean}"
+                                                     onclick="PF('sillasVuelo').show()"/>
+                                </div>
+                                <p:dialog header="Ingrese la cantidad de sillas" showEffect="fade" widgetVar="sillasVuelo" modal="true" rendered="#{inicioVuelosBean.seleccionarBoolean}">
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <p:outputLabel value="Cantidad de sillas:" for="sillas_v"/>
+                                        <p:inputText id="sillas_v" value="#{seguridadBean.cantidadSillas}"/>
+                                    </h:panelGrid>
+                                    <p:commandButton value="Validar y Agregar" action="#{seguridadBean.seleccionarSillas()}" update="@form"/>
+
+                                </p:dialog>
                             </div>
                         </p:dataViewListItem>
                     </p:dataView>

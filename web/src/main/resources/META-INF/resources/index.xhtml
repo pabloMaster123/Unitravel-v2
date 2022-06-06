@@ -16,17 +16,6 @@
     <h1>#{seguridadBean.administradorHotel}</h1>
     <h1>#{seguridadBean.cliente}</h1>
 
-
-
-
-    <p:commandButton styleClass="ui-button-raised ui-button-warning" icon="pi pi-user"
-                     iconPos="left" value="Login" onclick="PF('login').show()"
-                     rendered="#{!seguridadBean.autenticado}" />
-
-    <p:commandButton styleClass="ui-button-raised ui-button-warning" icon="pi pi-user"
-                     iconPos="left" value="Cerrar Sesion" action="#{seguridadBean.cerrarSesion}"
-                     rendered="#{seguridadBean.autenticado}" />
-
     <p:dialog header="Iniciar sesión" showEffect="fade" widgetVar="login" modal="true"
               rendered="#{!seguridadBean.autenticado}" >
         <h:form >

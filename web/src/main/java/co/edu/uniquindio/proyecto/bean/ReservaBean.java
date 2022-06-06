@@ -62,18 +62,20 @@ public class ReservaBean implements Serializable {
     @Value(value = "#{seguridadBean.fechaEntrada}")
     private LocalDate fechaInicio;
 
-    public void agregarReserva(){
+    public String agregarReserva(){
         try {
             if(cliente!=null) {
                 reservaServicio.agregarReserva(fechaInicio, fechaFinal, cantidadClientes, sillas, habitaciones, cliente);
                 FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Alerta", "Registro Exitoso!");
                 FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
+                return "/cliente/RegistrarReserva.xhtml?faces-redirect=true";
             }
         }catch (Exception e){
             e.printStackTrace();
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Alerta", e.getMessage());
             FacesContext.getCurrentInstance().addMessage("msj-bean", msg);
         }
+        return null;
     }
 
 

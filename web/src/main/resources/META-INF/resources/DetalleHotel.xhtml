@@ -43,7 +43,7 @@
                 </div>
 
                 <div>
-                    <p:dataView value="#{detalleHotelBean.habitaciones}" var="habitacion">
+                    <p:dataView value="#{detalleHotelBean.habitaciones}" var="habitacion" rows="10" paginator="true">
                         <f:facet name="header">
                             Listado de habitaciones
                         </f:facet>
@@ -60,6 +60,7 @@
                                 <div class="col-lg-2 col-md-1 align-self-center">
                                     <p:commandButton value="Agregar" styleClass="ui-button-raised" iconPos="right"
                                                      action="#{seguridadBean.seleccionarHabitacion(habitacion.codigo)}"
+                                                     rendered="#{detalleHotelBean.seleccionarBoolean}"
                                                      update="@form"/>
                                 </div>
                             </div>

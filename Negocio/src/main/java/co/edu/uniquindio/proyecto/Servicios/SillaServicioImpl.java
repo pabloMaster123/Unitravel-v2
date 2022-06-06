@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SillaServicioImpl implements SillaServicio {
@@ -62,5 +63,19 @@ public class SillaServicioImpl implements SillaServicio {
         } else {
             throw new Exception("No existe el vuelo indicado");
         }
+    }
+
+    @Override
+    public boolean verificarDisponibilidad(Vuelo vuelo, Integer cantidad) throws Exception {
+        Optional<Vuelo> aux = vueloRepo.findById(vuelo.getCodigo());
+        if(aux.isPresent()) {
+            Integer diferencia = aux.get().getCantidadDeSillas() - aux.get().getSillas().size();
+            if(diferencia>=cantidad){
+                return true;
+            } else {
+                throw new Exception("No se puede reservar la cantidad de sillas indicadas en el vuelo");
+            }
+        }
+        return false;
     }
 }

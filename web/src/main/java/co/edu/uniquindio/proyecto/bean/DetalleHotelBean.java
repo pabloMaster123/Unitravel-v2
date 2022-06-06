@@ -68,7 +68,7 @@ public class DetalleHotelBean implements Serializable {
 
     public String redireccionarParaReservar(boolean vuelo){
         if(vuelo){
-            return "/cliente/InicioVuelos.xhtml?faces-redirect=true";
+            return "/cliente/InicioVuelos.xhtml?faces-redirect=true&amp;seleccionar=true";
         } else {
             return "/cliente/RegistrarReserva.xhtml?faces-redirect=true";
         }
